@@ -27,9 +27,3 @@ $ python3 -m venv env
 $ source env/bin/activate
 $ pip install -r requirements.txt
 ```
-
-Then, every time you want to acess, don't forget to activate you enviroment:
-```
-$ source env/bin/activate
-```
-
