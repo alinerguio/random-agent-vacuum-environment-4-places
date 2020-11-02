@@ -15,10 +15,29 @@ import numbers
 
 # ______________________________________________________________________________
 
+class Thing:
+    """This represents any physical object that can appear in an Environment.
+    You subclass Thing to get the things you want. Each thing can have a
+    .__name__  slot (used for output only)."""
 
-class Agent():
-    """ An agent program that needs a model of the world (and of the agent itself) 
-    will have to build and maintain its own model. """
+    def __repr__(self):
+        return '<{}>'.format(getattr(self, '__name__', self.__class__.__name__))
+
+    def is_alive(self):
+        """Things that are 'alive' should return true."""
+        return hasattr(self, 'alive') and self.alive
+
+    def show_state(self):
+        """Display the agent's internal state. Subclasses should override."""
+        print("I don't know how to show_state.")
+    
+
+class Agent(Thing):
+    """ An Agent is a subclass of Thing with one required instance attribute 
+    (aka slot), .program, which should hold a function that takes one argument,
+    the percept, and returns an action. An agent program that needs a model of 
+    the world (and of the agent itself) will have to build and maintain 
+    its own model. """
 
     def __init__(self, program=None):
         self.alive = True
@@ -149,6 +168,19 @@ class Environment:
             if self.is_done():
                 return
             self.step()
+
+    def list_things_at(self, location, tclass=Thing):
+        """Return all things exactly at a given location."""
+        if isinstance(location, numbers.Number):
+            return [thing for thing in self.things
+                    if thing.location == location and isinstance(thing, tclass)]
+        return [thing for thing in self.things
+                if all(x == y for x, y in zip(thing.location, location)) and isinstance(thing, tclass)]
+
+    def some_things_at(self, location, tclass=Thing):
+        """Return true if at least one of the things at location
+        is an instance of class tclass (or a subclass)."""
+        return self.list_things_at(location, tclass) != []
 
     def add_thing(self, thing, location=None):
         """Add a thing to the environment, setting its location. For
