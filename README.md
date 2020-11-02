@@ -2,6 +2,7 @@
 
 ## Goal
 This project was developed for an Artificial Intelligence class. Specifically, to study agents.
+This implementation was inspired in this [repository](https://github.com/aimacode/aima-python/blob/master/).
 
 ## Running
 You'll need to look into the requirements for the first time using the repository. 
